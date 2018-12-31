@@ -1,0 +1,45 @@
+{% set version = "0.12" %}
+
+package:
+  name: gnu-regex
+  version: {{ version }}
+
+source:
+  - url: https://downloads.sourceforge.net/project/gnuwin32/regex/{{ version }}/regex-{{ version }}-src.zip
+    sha256: 1d8e3ff22baed22d90c7a3baa116127f8c6a22a85011b4d62cc19775c4e935cc
+
+build:
+  number: 0
+  skip: True  # [not win]
+
+requirements:
+  build:
+    - {{ compiler('m2w64_c') }}
+    - {{ compiler('m2w64_cxx') }}
+    - m2-base
+    - m2-make
+    - m2-bash
+  host:
+
+test:
+  commands:
+    - if not exist %LIBRARY_PREFIX%\mingw-w64\include\regex.h exit 1  # [win]
+    - if not exist %LIBRARY_PREFIX%\mingw-w64\lib\libregex.a exit 1  # [win]
+
+about:
+  home: https://www.gnu.org/software/regex/
+  license: GPL-2
+  license_file: src/COPYING
+  summary: GNU regex provides three groups of functions with which you can operate.
+  description: |
+      Regex provides three groups of functions with which you can operate on
+      regular expressions. One group--the GNU group--is more powerful but not
+      completely compatible with the other two, namely the POSIX and Berkeley
+      UNIX groups; its interface was designed specifically for GNU. The other
+      groups have the same interfaces as do the regular expression functions in
+      POSIX and Berkeley UNIX.
+  doc_url: https://www.gnu.org/software/gnulib/manual/html_node/Regular-expressions.html
+
+extra:
+  recipe-maintainers:
+    - dakcarto
